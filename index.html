@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>几何弦统一理论 | 智慧地图</title>
+    
+    <!-- 字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    
+    <!-- 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- 粒子效果库 -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #00ff9d;  /* 量子绿 */
+            --secondary: #667eea; /* 宇宙蓝 */
+            --accent: #ff6b9d;   /* 活力粉 */
+            --dark: #0a0a1a;     /* 深空黑 */
+            --darker: #050510;
+            --light: #e0e0ff;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* 粒子背景 */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        /* 视频封面容器 */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+        }
+        
+        /* 渐变覆盖层 */
+        .gradient-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                rgba(10, 10, 26, 0.9) 0%,
+                rgba(102, 126, 234, 0.2) 50%,
+                rgba(0, 255, 157, 0.1) 100%
+            );
+            z-index: 0;
+        }
+        
+        /* 主标题区域 */
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            max-width: 1000px;
+            padding: 2rem;
+        }
+        
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            color: var(--primary);
+            letter-spacing: 4px;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+        
+        .main-title {
+            font-size: 4.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.1;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* 霓虹按钮 */
+        .cta-button {
+            display: inline-block;
+            background: rgba(0, 255, 157, 0.1);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            letter-spacing: 1px;
+            margin: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        
+        .cta-button:hover {
+            background: rgba(0, 255, 157, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.5);
+            transform: translateY(-3px);
+        }
+        
+        /* 玻璃态卡片 */
+        .glass-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(0, 255, 157, 0.3);
+        }
+        
+        /* 内容区域 */
+        .content-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        /* 网格布局 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        /* 文件卡片 */
+        .file-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .file-card:hover {
+            border-color: var(--primary);
+            background: rgba(0, 255, 157, 0.05);
+        }
+        
+        .file-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+            color: var(--primary);
+        }
+        
+        .file-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .file-info p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        /* 时间线 */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 4rem auto;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            padding-left: 2rem;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+        }
+        
+        .timeline-date {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            margin-top: 6rem;
+            border-top: 1px solid var(--glass-border);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .social-links a {
+            color: var(--light);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: var(--primary);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 3rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .content-section {
+                padding: 4rem 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 粒子背景 -->
+    <div id="particles-js"></div>
+    
+    <!-- 视频封面区域 -->
+    <section class="hero-section">
+        <div class="video-container">
+            <!-- 视频背景 - 可以使用自己的视频或替换为在线视频 -->
+            <video autoplay muted loop playsinline>
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-geometric-motion-background-1588-large.mp4" type="video/mp4">
+                <!-- 备用图片 -->
+                <img src="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80" alt="几何背景">
+            </video>
+            <div class="gradient-overlay"></div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="logo">GEOMETRIC STRING THEORY</div>
+            <h1 class="main-title">几何弦统一理论</h1>
+            <p class="subtitle">探索宇宙的几何本质 - 一个从几何公理到万物法则的完整理论框架</p>
+            <div>
+                <a href="#theory" class="cta-button">
+                    <i class="fas fa-brain"></i> 探索理论
+                </a>
+                <a href="#resources" class="cta-button">
+                    <i class="fas fa-download"></i> 获取资源
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 理论介绍区域 -->
+    <section id="theory" class="content-section">
+        <h2 class="section-title">理论框架</h2>
+        <div class="grid-container">
+            <div class="glass-card">
+                <h3><i class="fas fa-shapes"></i> 几何第一性</h3>
+                <p>物理实在的基本单元是几何结构，而不是物质点。几何先于物理，关系先于实体。</p>
+            </div>
+            <div class="glass-card">
+                <h3><i class="fas fa-expand-arrows-alt"></i> 维度涌现</h3>
+                <p>从三维几何关系自然推导出九维空间：D(3)=9，高维不是假设而是几何必然。</p>
+            </div>
+            <div class="glass-card">
+                <h3><i class="fas fa-atom"></i> 万物涌现</h3>
+                <p>粒子与力从几何弦的量子振动中自然涌现，统一描述所有基本相互作用。</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 资源下载区域 -->
+    <section id="resources" class="content-section" style="background: rgba(0,0,0,0.2);">
+        <h2 class="section-title">核心资源</h2>
+        <div class="grid-container">
+            <a href="#" class="file-card">
+                <div class="file-icon">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <div class="file-info">
+                    <h3>几何弦统一理论总纲</h3>
+                    <p>完整理论体系 · PDF · 345KB</p>
+                </div>
+            </a>
+            
+            <a href="#" class="file-card">
+                <div class="file-icon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <div class="file-info">
+                    <h3>四步学习指南</h3>
+                    <p>从入门到精通 · PDF · 520KB</p>
+                </div>
+            </a>
+            
+            <a href="#" class="file-card">
+                <div class="file-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <div class="file-info">
+                    <h3>演讲视频与PPT</h3>
+                    <p>五步讲解体系 · MP4+PPTX</p>
+                </div>
+            </a>
+            
+            <a href="#" class="file-card">
+                <div class="file-icon">
+                    <i class="fas fa-code-branch"></i>
+                </div>
+                <div class="file-info">
+                    <h3>开源代码仓库</h3>
+                    <p>模拟与可视化 · GitHub</p>
+                </div>
+            </a>
+        </div>
+    </section>
+    
+    <!-- 时间线区域 -->
+    <section class="content-section">
+        <h2 class="section-title">发展路线图</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">2025年3月</div>
+                <h3>首次公开演讲</h3>
+                <p>在北京理论物理研究所进行首次完整理论展示，邀请学术界同行评议。</p>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-date">2025年4-6月</div>
+                <h3>完整论文发布</h3>
+                <p>在arXiv预印本平台发布完整理论体系，开启同行评审与讨论。</p>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-date">2025年下半年</div>
+                <h3>实验验证阶段</h3>
+                <p>与实验物理学家合作，设计验证关键预言的实验方案。</p>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-date">2026年</div>
+                <h3>专著出版与教学推广</h3>
+                <p>出版理论专著，开发相关课程材料，推动学术体系改革。</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="logo" style="margin-bottom: 1rem;">GEOMETRIC STRING UNIFICATION</div>
+        <p>一个开放、生长、协作的思想生态系统</p>
+        
+        <div class="social-links">
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fas fa-envelope"></i></a>
+        </div>
+        
+        <p style="opacity: 0.6; margin-top: 2rem; font-size: 0.9rem;">
+            © 2025 几何弦理论项目 · 采用 CC-BY 4.0 开源协议 · 
+            <span id="live-date">最后更新: 2025年3月1日</span>
+        </p>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script>
+        // 粒子效果配置
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#00ff9d" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#667eea",
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                }
+            },
+            retina_detect: true
+        });
+        
+        // 更新日期
+        document.getElementById('live-date').textContent = 
+            '最后更新: ' + new Date().toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // 滚动动画
+        window.addEventListener('scroll', () => {
+            const cards = document.querySelectorAll('.glass-card');
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            
+            cards.forEach(card => {
+                const cardTop = card.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if(cardTop < windowHeight * 0.85) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }
+            });
+            
+            timelineItems.forEach((item, index) => {
+                const itemTop = item.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if(itemTop < windowHeight * 0.85) {
+                    setTimeout(() => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateX(0)';
+                    }, index * 200);
+                }
+            });
+        });
+        
+        // 初始化样式
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        });
+        
+        document.querySelectorAll('.timeline-item').forEach(item => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateX(-20px)';
+            item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        });
+        
+        // 触发初始滚动以显示元素
+        window.dispatchEvent(new Event('scroll'));
+    </script>
+</body>
+</html>
